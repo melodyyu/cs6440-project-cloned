@@ -1,11 +1,17 @@
 from flask import Flask, request, jsonify
 import numpy as np
+import os
 from tensorflow.keras.models import load_model
+
+# Disable GPU usage for tensorflow to prevent CUDA-related warnings
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-model = load_model('cvd_nn.h5')
+model_path = os.path.join(os.path.dirname(__file__), 'cvd_nn.h5')
+print(model_path)
+model = load_model(model_path)
 
 @app.route('/api/probability', methods=['POST'])
 def probability():
