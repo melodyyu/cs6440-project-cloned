@@ -31,7 +31,7 @@ def log_request_info():
     print(f"Headers: {request.headers}")
     print(f"Content-Type: {request.content_type}")
     print(f"Body: {request.data}")
-    print(f"JSON: {request.json['userInput']}")
+    # print(f"JSON: {request.json['userInput']}")
   
 # Add a default route 
 @app.route('/')
