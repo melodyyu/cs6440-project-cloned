@@ -22,6 +22,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -36,22 +38,23 @@ export class ApiService {
    * @param userInput - The data to send to the backend
    * @returns Observable with the API response
    */
-  calculateProbability(userInput: any): Observable<any> {
-    const payload = { userInput };
-    return this.http.post<any>('/api/probability', payload);
-}
-
-
-  /**
-   * Calls the API to calculate classification
-   * @param userInput - The data to send to the backend
-   * @returns Observable with the API response
-   */
-  calculateClassification(userInput: any): Observable<any> {
-    // const endpoint = `${this.baseUrl}/api/classification`;
-    // return this.http.post(endpoint, { userInput });
-      const payload = { userInput };
-      return this.http.post<any>('/api/classification', payload);
-    }
+  calculateProbability(userInput: any) {
+    console.log('Making request to:', `${this.baseUrl}/api/probability`);
+    return this.http.post(`${this.baseUrl}/api/probability`, userInput).pipe(
+      catchError((error) => {
+        console.error('Error in Probability API:', error);
+        return throwError(error);
+      })
+    );
   }
-// }
+
+  calculateClassification(userInput: any) {
+    console.log('Making request to:', `${this.baseUrl}/api/classification`);
+    return this.http.post(`${this.baseUrl}/api/classification`, userInput).pipe(
+      catchError((error) => {
+        console.error('Error in Classification API:', error);
+        return throwError(error);
+      })
+    );
+  }
+}
