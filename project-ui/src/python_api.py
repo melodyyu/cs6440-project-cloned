@@ -74,6 +74,7 @@ def classification():
 
     print ("Doing classification stuff now")
     if request.content_type != 'application/json':
+        print("IT WASNT APPLICATION/JSON")
         return jsonify({"error": "Unsupported Media Type"}), 415
 
     # Parse JSON body
@@ -129,7 +130,7 @@ def add_cors_headers(response):
 
     print("Response headers: ", response.headers)
     print("THE RESPONSE AFTER REQUEST WAS THIS: ", response)
-    return response, 200
+    return response
 
 # Run the app
 # app.run(debug=True)
