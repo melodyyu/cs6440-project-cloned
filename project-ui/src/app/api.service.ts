@@ -48,7 +48,10 @@ export class ApiService {
    * @returns Observable with the API response
    */
   calculateClassification(userInput: any): Observable<any> {
-    const endpoint = `${this.baseUrl}/api/classification`;
-    return this.http.post(endpoint, { userInput });
+    // const endpoint = `${this.baseUrl}/api/classification`;
+    // return this.http.post(endpoint, { userInput });
+      const payload = { userInput };
+      return this.http.post<any>('/api/classification', payload);
+    }
   }
-}
+// }
