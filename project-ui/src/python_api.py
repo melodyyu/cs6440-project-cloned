@@ -22,17 +22,11 @@ print(f"Model path: {model_path}")
 model = load_model(model_path)
 print(f"Model loaded in {time.time() - start_time} seconds")
 
-# user_input = request.json['userInput']
-# print("USER INPUT BEFORE THE CALL: ", user_input)
-
 
 # Log all incoming requests 
 @app.before_request
 def log_request_info():
     request.start_time = time.time()
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = '*'
     print(f"Received request: {request.method} {request.path}")
     print(f"Headers: {request.headers}")
     # print(f"Body: {request.data}")
@@ -96,15 +90,15 @@ def classification():
     print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
 
-# @app.route('/api/classification', methods=['OPTIONS'])
-# def handle_preflight():
-#     print ("PREFLIGHT")
-#     response = make_response()
-#     response.headers['Access-Control-Allow-Origin'] = '*'
-#     response.headers['Access-Control-Allow-Methods'] = '*'
-#     response.headers['Access-Control-Allow-Headers'] = '*'
-#     print("GOT TO THE END OF PREFLIGHT", response)
-#     return response
+@app.route('/api/classification', methods=['OPTIONS'])
+def handle_preflight():
+    print ("PREFLIGHT")
+    response = make_response()
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
+    print("GOT TO THE END OF PREFLIGHT", response)
+    return response
 
 @app.after_request
 def add_cors_headers(response):
