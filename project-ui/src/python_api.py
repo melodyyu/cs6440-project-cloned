@@ -24,6 +24,7 @@ print(f"Model loaded in {time.time() - start_time} seconds")
 # Log all incoming requests 
 @app.before_request
 def log_request_info():
+    request.start_time = time.time()
     print(f"Received request: {request.method} {request.path}")
     print(f"Headers: {request.headers}")
     print(f"Body: {request.data}")
@@ -87,16 +88,18 @@ def classification():
 @app.route('/api/classification', methods=['OPTIONS'])
 def handle_preflight():
     response = make_response()
-    response.headers['Access-Control-Allow-Origin'] = 'https://cs6440-cardiovascular-risk-detection.onrender.com'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
     return response
 
 @app.after_request
 def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://cs6440-cardiovascular-risk-detection.onrender.com'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    duration = time.time() - getattr(request, "start_time", time.time())
+    print(f"Request processed in {duration:.2f} seconds")
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
     return response
 
 # Run the app
