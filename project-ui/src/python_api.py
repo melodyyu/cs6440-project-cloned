@@ -85,15 +85,15 @@ def classification():
     print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
 
-# @app.route('/api/classification', methods=['OPTIONS'])
-# def handle_preflight():
-#     print ("PREFLIGHT")
-#     response = make_response()
-#     response.headers['Access-Control-Allow-Origin'] = '*'
-#     response.headers['Access-Control-Allow-Methods'] = '*'
-#     response.headers['Access-Control-Allow-Headers'] = '*'
-#     print("GOT TO THE END OF PREFLIGHT", response)
-#     return response
+@app.route('/api/classification', methods=['OPTIONS'])
+def handle_preflight():
+    print ("PREFLIGHT")
+    response = make_response()
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
+    print("GOT TO THE END OF PREFLIGHT", response)
+    return response
 
 @app.after_request
 def add_cors_headers(response):
@@ -103,6 +103,7 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
+    print("THE RESPONSE AFTER REQUEST WAS THIS", response)
     return response
 
 # Run the app
