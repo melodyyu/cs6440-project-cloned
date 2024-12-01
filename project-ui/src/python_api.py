@@ -22,8 +22,8 @@ print(f"Model path: {model_path}")
 model = load_model(model_path)
 print(f"Model loaded in {time.time() - start_time} seconds")
 
-user_input = request.json['userInput']
-print("USER INPUT BEFORE THE CALL: ", user_input)
+# user_input = request.json['userInput']
+# print("USER INPUT BEFORE THE CALL: ", user_input)
 
 
 # Log all incoming requests 
