@@ -87,14 +87,17 @@ def classification():
 
 @app.route('/api/classification', methods=['OPTIONS'])
 def handle_preflight():
+    print ("PREFLIGHT")
     response = make_response()
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
+    print("GOT TO THE END OF PREFLIGHT", response)
     return response
 
 @app.after_request
 def add_cors_headers(response):
+    print ("AFTER REQUEST")
     duration = time.time() - getattr(request, "start_time", time.time())
     print(f"Request processed in {duration:.2f} seconds")
     response.headers['Access-Control-Allow-Origin'] = '*'
