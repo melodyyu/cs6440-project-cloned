@@ -31,6 +31,7 @@ def log_request_info():
     print(f"Headers: {request.headers}")
     print(f"Content-Type: {request.content_type}")
     print(f"Body: {request.data}")
+    print(f"JSON: {request.json}")
   
 # Add a default route 
 @app.route('/')
@@ -64,11 +65,11 @@ def probability():
 # Neural network endpoint
 @app.route('/api/classification', methods=['OPTIONS', 'POST'])
 def classification():
-    response = make_response()
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = '*'
-    print(f"RESPONSE METHOD, PATH, HEADERS: {response.method}, {response.path}, {response.headers}")
+    # response = make_response()
+    # response.headers['Access-Control-Allow-Origin'] = '*'
+    # response.headers['Access-Control-Allow-Methods'] = '*'
+    # response.headers['Access-Control-Allow-Headers'] = '*'
+    # print(f"RESPONSE METHOD, PATH, HEADERS: {response.method}, {response.path}, {response.headers}")
 
 
     print ("Doing classification stuff now")
@@ -111,12 +112,13 @@ def classification():
 @app.after_request
 def add_cors_headers(response):
     print ("AFTER REQUEST")
-    duration = time.time() - getattr(request, "start_time", time.time())
+    duration = time.time() - getattr(response, "start_time", time.time())
     print(f"Request processed in {duration:.2f} seconds")
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
-    print("THE RESPONSE AFTER REQUEST WAS THIS", response)
+    print("Response headers: ", response.headers)
+    print("THE RESPONSE AFTER REQUEST WAS THIS: ", response)
     return response
 
 # Run the app

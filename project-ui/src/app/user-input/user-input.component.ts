@@ -71,6 +71,7 @@ export class UserInputComponent {
     const button = (event.target as HTMLButtonElement).value
     // console.log(input)
     console.log('User input:', input); // Debug user input
+    console.log('User input TYPE:', typeof input); // Debug user input type
     console.log('Button clicked:', button); // Debug which button was clicked
 
     if (button === 'probability') {
