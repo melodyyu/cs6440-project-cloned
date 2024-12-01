@@ -37,9 +37,10 @@ export class ApiService {
    * @returns Observable with the API response
    */
   calculateProbability(userInput: any): Observable<any> {
-    const endpoint = `${this.baseUrl}/api/probability`;
-    return this.http.post(endpoint, { userInput });
-  }
+    const payload = { userInput };
+    return this.http.post<any>('/api/probability', payload);
+}
+
 
   /**
    * Calls the API to calculate classification
