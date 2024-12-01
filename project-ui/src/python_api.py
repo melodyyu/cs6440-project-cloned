@@ -70,6 +70,7 @@ def classification():
     if request.method == "OPTIONS":  # Handle CORS preflight request
         return _build_cors_preflight_response()
     elif request.method == "POST":  # Handle the actual POST request
+        print(f">>>>>ENTERING POST FOR CLASSIFICATION")
         try:
             user_input = request.json.get('userInput', None)
             if not user_input:
