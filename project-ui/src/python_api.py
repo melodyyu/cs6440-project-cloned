@@ -63,6 +63,7 @@ def probability():
 def classification():
     print ("Doing classification stuff now")
     user_input = request.json['userInput']
+    print(user_input)
     if user_input is None:
         return jsonify({"error": "Invalid payload"}), 400
     

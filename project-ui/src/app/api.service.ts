@@ -29,7 +29,7 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'https://cs6440-project-cloned.onrender.com'; // Ensure this is your backend URL
+  private baseUrl = 'https://cs6440-project-cloned.onrender.com';
 
   constructor(private http: HttpClient) { }
 
