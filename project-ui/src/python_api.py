@@ -9,12 +9,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
-# Ensures Flask respects Render's PORT env variable 
-port = int(os.environ.get("PORT", 5000))
-app.run(host="0.0.0.0", port=port)
-
+# Load the nn model
 model_path = os.path.join(os.path.dirname(__file__), 'cvd_nn.h5')
-print(model_path)
+print(f"Model path: {model_path}")
 model = load_model(model_path)
 
 # Add a default route 
@@ -22,6 +19,7 @@ model = load_model(model_path)
 def home():
     return "Welcome to the Cardiovascular Risk API!"
 
+# Logistic Regression endpoint
 @app.route('/api/probability', methods=['POST'])
 def probability():
     user_input = request.json['userInput']
@@ -39,6 +37,7 @@ def probability():
 
     return jsonify({"result": probability[0]})
 
+# Neural network endpoint
 @app.route('/api/classification', methods=['POST'])
 def classification():
     user_input = request.json['userInput']
@@ -49,4 +48,10 @@ def classification():
 
     return jsonify({"result": classification_result})
 
-app.run(debug=True)
+# Run the app
+# app.run(debug=True)
+if __name__ == "__main__":
+  # Ensures Flask respects Render's PORT env variable 
+  port = int(os.environ.get("PORT", 5000))
+  app.run(host="0.0.0.0", port=port)
+
