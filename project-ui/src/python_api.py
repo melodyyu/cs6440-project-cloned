@@ -73,11 +73,19 @@ def classification():
 
 
     print ("Doing classification stuff now")
-    user_input = request.json['userInput']
+    if request.content_type != 'application/json':
+        return jsonify({"error": "Unsupported Media Type"}), 415
+
+    # Parse JSON body
+    try:
+        user_input = request.json['userInput']
+    except (TypeError, KeyError):
+        return jsonify({"error": "Invalid JSON body"}), 400
+    # user_input = request.json['userInput']
     print("USER INPUT CLASSIFICATION: ", user_input)
     print("USER INPUT TYPE CLASSIFICATION: ", type(user_input))    
-    if user_input is None:
-        return jsonify({"error": "Invalid payload"}), 400
+    # if user_input is None:
+    #     return jsonify({"error": "Invalid payload"}), 400
     
     # preprocessed_input = np.array(list(user_input.values()))
     preprocessed_input = list(user_input.values())
@@ -117,6 +125,8 @@ def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
+    response.headers['Content-Type'] = 'application/json'  # Set content type
+
     print("Response headers: ", response.headers)
     print("THE RESPONSE AFTER REQUEST WAS THIS: ", response)
     return response
