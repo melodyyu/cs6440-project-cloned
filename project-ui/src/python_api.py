@@ -84,6 +84,14 @@ def classification():
     print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
 
+@app.route('/api/classification', methods=['OPTIONS'])
+def handle_preflight():
+    response = make_response()
+    response.headers['Access-Control-Allow-Origin'] = 'https://cs6440-cardiovascular-risk-detection.onrender.com'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
+
 @app.after_request
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = 'https://cs6440-cardiovascular-risk-detection.onrender.com'
