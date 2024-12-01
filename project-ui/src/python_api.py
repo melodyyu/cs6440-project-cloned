@@ -10,7 +10,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
 # CORS(app, resources={r"/*": {"origins": "https://cs6440-cardiovascular-risk-detection.onrender.com"}})
-CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "methods": "*"}})
+CORS(app, resources={r"/*": {"origins": "*", "allow_headers": "*", "methods": "*"}}, supports_credentials=True)
 app.config['DEBUG'] = True
 
 print("Starting server..")
@@ -29,7 +29,8 @@ def log_request_info():
     request.start_time = time.time()
     print(f"Received request: {request.method} {request.path}")
     print(f"Headers: {request.headers}")
-    # print(f"Body: {request.data}")
+    print(f"Content-Type: {request.content_type}")
+    print(f"Body: {request.data}")
   
 # Add a default route 
 @app.route('/')
@@ -67,7 +68,7 @@ def classification():
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
-    print(f"RESPONSE METHOD, PATH, HEADERS: {request.method} {request.path}, {request.headers}")
+    print(f"RESPONSE METHOD, PATH, HEADERS: {request.method}, {request.path}, {request.headers}")
 
 
     print ("Doing classification stuff now")
