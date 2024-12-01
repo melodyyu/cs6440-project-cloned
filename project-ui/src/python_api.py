@@ -64,7 +64,7 @@ def probability():
     return jsonify({"result": probability[0]})
 
 # Neural network endpoint
-@app.route('/api/classification', methods=['OPTIONS', 'POST'])
+@app.route('/api/classification', methods=['POST'])
 def classification():
     print ("Doing classification stuff now")
     user_input = request.json['userInput']
