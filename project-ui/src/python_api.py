@@ -30,9 +30,12 @@ print(f"Model loaded in {time.time() - start_time} seconds")
 @app.before_request
 def log_request_info():
     request.start_time = time.time()
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = '*'
+    response.headers['Access-Control-Allow-Headers'] = '*'
     print(f"Received request: {request.method} {request.path}")
     print(f"Headers: {request.headers}")
-    print(f"Body: {request.data}")
+    # print(f"Body: {request.data}")
   
 # Add a default route 
 @app.route('/')
