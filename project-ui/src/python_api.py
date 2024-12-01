@@ -58,7 +58,7 @@ def probability():
     return jsonify({"result": probability[0]})
 
 # Neural network endpoint
-@app.route('/api/classification', methods=['POST'])
+@app.route('/api/classification', methods=['GET','POST'])
 def classification():
     print ("Doing classification stuff now")
     user_input = request.json['userInput']
@@ -85,15 +85,15 @@ def classification():
     print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
 
-@app.route('/api/classification', methods=['OPTIONS'])
-def handle_preflight():
-    print ("PREFLIGHT")
-    response = make_response()
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = '*'
-    response.headers['Access-Control-Allow-Headers'] = '*'
-    print("GOT TO THE END OF PREFLIGHT", response)
-    return response
+# @app.route('/api/classification', methods=['OPTIONS'])
+# def handle_preflight():
+#     print ("PREFLIGHT")
+#     response = make_response()
+#     response.headers['Access-Control-Allow-Origin'] = '*'
+#     response.headers['Access-Control-Allow-Methods'] = '*'
+#     response.headers['Access-Control-Allow-Headers'] = '*'
+#     print("GOT TO THE END OF PREFLIGHT", response)
+#     return response
 
 @app.after_request
 def add_cors_headers(response):
