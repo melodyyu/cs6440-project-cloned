@@ -32,7 +32,9 @@ def home():
 @app.route('/api/probability', methods=['POST'])
 def probability():
     user_input = request.json['userInput']
-    print(type(user_input))
+    # print(type(user_input))
+    if user_input is None:
+        return jsonify({"error": "Invalid payload"}), 400
     values = list(user_input.values())
     values = np.array(values)
     
@@ -46,19 +48,23 @@ def probability():
 
     print(f"User Input was: {values}")
     print(f"Probability is: {probability}")
+    print(f"Response being sent: {jsonify({'result': probability[0]})}")
     return jsonify({"result": probability[0]})
 
 # Neural network endpoint
 @app.route('/api/classification', methods=['POST'])
 def classification():
     user_input = request.json['userInput']
+    if user_input is None:
+        return jsonify({"error": "Invalid payload"}), 400
     preprocessed_input = np.array(list(user_input.values()))
     # print(preprocessed_input)
     prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]  
     classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
 
-    print(f"User Input was: {values}")
+    print(f"User Input was: {preprocessed_input}")
     print(f"Classification is: {classification_result}")
+    print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
 
 # Run the app

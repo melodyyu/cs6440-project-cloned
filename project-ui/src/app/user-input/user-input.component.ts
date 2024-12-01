@@ -69,15 +69,30 @@ export class UserInputComponent {
     }
 
     const button = (event.target as HTMLButtonElement).value
-    console.log(input)
+    // console.log(input)
+    console.log('User input:', input); // Debug user input
+    console.log('Button clicked:', button); // Debug which button was clicked
 
     if (button === 'probability') {
-      this.apiService.calculateProbability({userInput: input})
-      .subscribe((response) => this.output = response)  
-    }
-    else if (button === 'classification') {
-      this.apiService.calculateClassification({userInput: input})
-      .subscribe((response) => this.output = response) 
+      this.apiService.calculateProbability({ userInput: input }).subscribe({
+        next: (response) => {
+          console.log('Probability API Response:', response); // Log success response
+          this.output = response;
+        },
+        error: (error) => {
+          console.error('Error from Probability API:', error); // Log error
+        },
+      });
+    } else if (button === 'classification') {
+      this.apiService.calculateClassification({ userInput: input }).subscribe({
+        next: (response) => {
+          console.log('Classification API Response:', response); // Log success response
+          this.output = response;
+        },
+        error: (error) => {
+          console.error('Error from Classification API:', error); // Log error
+        },
+      });
     }
   }
 }
