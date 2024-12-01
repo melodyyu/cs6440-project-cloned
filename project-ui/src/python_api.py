@@ -57,12 +57,16 @@ def classification():
     user_input = request.json['userInput']
     if user_input is None:
         return jsonify({"error": "Invalid payload"}), 400
+    
     preprocessed_input = np.array(list(user_input.values()))
-    # print(preprocessed_input)
+    print(f"User Input was: {preprocessed_input}")
+    print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
+
+    print(f"Starting prediction...")
+
     prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]  
     classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
 
-    print(f"User Input was: {preprocessed_input}")
     print(f"Classification is: {classification_result}")
     print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
