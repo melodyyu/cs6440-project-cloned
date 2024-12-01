@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "https://cs6440-cardiovascular-risk-detection.onrender.com"}})
 app.config['DEBUG'] = True
 
 # Load the nn model
