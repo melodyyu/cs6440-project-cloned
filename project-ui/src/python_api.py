@@ -38,7 +38,7 @@ def probability():
     probability = list(probability)
 
     print(f"User Input was: {values}")
-    print(f"Probability is: {probability"})
+    print(f"Probability is: {probability}")
     return jsonify({"result": probability[0]})
 
 # Neural network endpoint
@@ -51,7 +51,7 @@ def classification():
     classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
 
     print(f"User Input was: {values}")
-    print(f"Classification is: {classification_result"})
+    print(f"Classification is: {classification_result}")
     return jsonify({"result": classification_result})
 
 # Run the app
