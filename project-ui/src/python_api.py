@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import numpy as np
 import os
 from tensorflow.keras.models import load_model
@@ -7,6 +8,7 @@ from tensorflow.keras.models import load_model
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 app = Flask(__name__)
+CORS(app)
 app.config['DEBUG'] = True
 
 # Load the nn model
@@ -35,6 +37,8 @@ def probability():
     probability = 1/(1 + odds)
     probability = list(probability)
 
+    print(f"User Input was: {values}")
+    print(f"Probability is: {probability"})
     return jsonify({"result": probability[0]})
 
 # Neural network endpoint
@@ -46,6 +50,8 @@ def classification():
     prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]  
     classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
 
+    print(f"User Input was: {values}")
+    print(f"Classification is: {classification_result"})
     return jsonify({"result": classification_result})
 
 # Run the app
