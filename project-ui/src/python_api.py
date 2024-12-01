@@ -68,7 +68,7 @@ def classification():
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = '*'
     response.headers['Access-Control-Allow-Headers'] = '*'
-    print(f"RESPONSE METHOD, PATH, HEADERS: {request.method}, {request.path}, {request.headers}")
+    print(f"RESPONSE METHOD, PATH, HEADERS: {response.method}, {response.path}, {response.headers}")
 
 
     print ("Doing classification stuff now")
