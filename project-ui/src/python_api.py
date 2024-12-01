@@ -59,11 +59,14 @@ def probability():
 # Neural network endpoint
 @app.route('/api/classification', methods=['POST'])
 def classification():
+    print ("Doing classification stuff now")
     user_input = request.json['userInput']
     if user_input is None:
         return jsonify({"error": "Invalid payload"}), 400
     
-    preprocessed_input = np.array(list(user_input.values()))
+    # preprocessed_input = np.array(list(user_input.values()))
+    preprocessed_input = list(user_input.values())
+    preprocessed_input = np.array(preprocessed_input)
     print(f"User Input was: {preprocessed_input}")
     print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
 
