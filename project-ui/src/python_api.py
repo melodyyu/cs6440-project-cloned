@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import numpy as np
 import os
+import time 
 from tensorflow.keras.models import load_model
 
 # Disable GPU usage for tensorflow to prevent CUDA-related warnings
@@ -11,10 +12,14 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://cs6440-cardiovascular-risk-detection.onrender.com"}})
 app.config['DEBUG'] = True
 
+print("Starting server..")
+start_time = time.time() 
+
 # Load the nn model
 model_path = os.path.join(os.path.dirname(__file__), 'cvd_nn.h5')
 print(f"Model path: {model_path}")
 model = load_model(model_path)
+print(f"Model loaded in {time.time() - start_time} seconds")
 
 # Log all incoming requests 
 @app.before_request
@@ -63,10 +68,15 @@ def classification():
     print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
 
     print(f"Starting prediction...")
-
+    model_start = time.time() 
     prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]  
+    model_end = time.time() 
     classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
 
+    end_time = time.time()
+    print(f"Total time: {end_time - start_time} seconds")
+    print(f"Model inference time: {model_end - model_start} seconds")
+  
     print(f"Classification is: {classification_result}")
     print(f"Response being sent: {jsonify({'result': classification_result})}")
     return jsonify({"result": classification_result})
