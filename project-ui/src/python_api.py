@@ -9,9 +9,18 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
+# Ensures Flask respects Render's PORT env variable 
+port = int(os.environ.get("PORT", 5000))
+app.run(host="0.0.0.0", port=port)
+
 model_path = os.path.join(os.path.dirname(__file__), 'cvd_nn.h5')
 print(model_path)
 model = load_model(model_path)
+
+# Add a default route 
+@app.route('/')
+def home():
+    return "Welcome to the Cardiovascular Risk API!"
 
 @app.route('/api/probability', methods=['POST'])
 def probability():
