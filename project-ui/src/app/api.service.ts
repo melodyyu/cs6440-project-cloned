@@ -21,6 +21,7 @@
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
@@ -49,6 +50,9 @@ export class ApiService {
   }
 
   calculateClassification(userInput: any) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
     console.log('Making request to:', `${this.baseUrl}/api/classification`);
     return this.http.post(`${this.baseUrl}/api/classification`, userInput).pipe(
       catchError((error) => {
