@@ -94,14 +94,14 @@ def classification():
     else:
         raise RuntimeError(f"Unexpected method {request.method}")
 
-# def _build_cors_preflight_response():
-#     """Build response for CORS preflight requests."""
-#     response = make_response()
-#     response.headers.add("Access-Control-Allow-Origin", "*")
-#     response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
-#     response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
-#     response.headers.add("Access-Control-Max-Age", "3600")  # Cache preflight for 1 hour
-#     return response
+def _build_cors_preflight_response():
+    """Build response for CORS preflight requests."""
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+    response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+    response.headers.add("Access-Control-Max-Age", "3600")  # Cache preflight for 1 hour
+    return response
 
 def _corsify_actual_response(response, status=200):
     """Add CORS headers to actual responses."""
