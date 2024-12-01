@@ -26,6 +26,8 @@ print(f"Model loaded in {time.time() - start_time} seconds")
 # Log all incoming requests 
 @app.before_request
 def log_request_info():
+    if request.method == "OPTIONS":
+        print("CORS preflight request")
     request.start_time = time.time()
     print(f"Received request: {request.method} {request.path}")
     print(f"Headers: {request.headers}")
@@ -74,12 +76,20 @@ def classification():
                 return _corsify_actual_response(jsonify({"error": "Invalid payload"}), 400)
             
             print("USER INPUT CLASSIFICATION: ", user_input)
-            preprocessed_input = np.array(list(user_input.values()))
-            print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
+            try:
+                preprocessed_input = np.array(list(user_input.values()))
+                print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
+            except Exception as e:
+                print(f"Input processing error: {e}")
+                return _corsify_actual_response(jsonify({"error": "Invalid input"}), 400)
 
             print(f"Starting prediction...")
             model_start = time.time()
-            prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]
+            try:
+                prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]
+            except Exception as e:
+                print(f"Predictin error: {e}")
+                return _corsify_actual_response(jsonify({"error": "Prediction failed"}), 500)
             model_end = time.time()
 
             classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
