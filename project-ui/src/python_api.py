@@ -129,7 +129,7 @@ def add_cors_headers(response):
 
     print("Response headers: ", response.headers)
     print("THE RESPONSE AFTER REQUEST WAS THIS: ", response)
-    return response
+    return response, 200
 
 # Run the app
 # app.run(debug=True)
