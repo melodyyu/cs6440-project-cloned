@@ -16,6 +16,13 @@ model_path = os.path.join(os.path.dirname(__file__), 'cvd_nn.h5')
 print(f"Model path: {model_path}")
 model = load_model(model_path)
 
+# Log all incoming requests 
+@app.before_request
+def log_request_info():
+    print(f"Received request: {request.method} {request.path}")
+    print(f"Headers: {request.headers}")
+    print(f"Body: {request.data}")
+  
 # Add a default route 
 @app.route('/')
 def home():
