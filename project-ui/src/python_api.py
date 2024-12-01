@@ -39,7 +39,8 @@ def home():
 @app.route('/api/probability', methods=['POST'])
 def probability():
     user_input = request.json['userInput']
-    # print(type(user_input))
+    print("USER INPUT PROBABILITY: ", user_input)
+    print("USER INPUT TYPE PROBABILITY: ", type(user_input))
     if user_input is None:
         return jsonify({"error": "Invalid payload"}), 400
     values = list(user_input.values())
@@ -63,7 +64,8 @@ def probability():
 def classification():
     print ("Doing classification stuff now")
     user_input = request.json['userInput']
-    print(user_input)
+    print("USER INPUT CLASSIFICATION: ", user_input)
+    print("USER INPUT TYPE CLASSIFICATION: ", type(user_input))    
     if user_input is None:
         return jsonify({"error": "Invalid payload"}), 400
     
