@@ -65,6 +65,48 @@ def probability():
 # Neural network endpoint
 @app.route('/api/classification', methods=['OPTIONS', 'POST'])
 def classification():
+    if request.method == "OPTIONS":  # Handle CORS preflight request
+        return _build_cors_preflight_response()
+    elif request.method == "POST":  # Handle the actual POST request
+        try:
+            user_input = request.json.get('userInput', None)
+            if not user_input:
+                return _corsify_actual_response(jsonify({"error": "Invalid payload"}), 400)
+            
+            print("USER INPUT CLASSIFICATION: ", user_input)
+            preprocessed_input = np.array(list(user_input.values()))
+            print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
+
+            print(f"Starting prediction...")
+            model_start = time.time()
+            prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]
+            model_end = time.time()
+
+            classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
+            print(f"Classification is: {classification_result}")
+            print(f"Model inference time: {model_end - model_start} seconds")
+
+            response_data = {"result": classification_result}
+            return _corsify_actual_response(jsonify(response_data), 200)
+        except Exception as e:
+            print(f"Error processing classification: {e}")
+            return _corsify_actual_response(jsonify({"error": "Internal server error"}), 500)
+    else:
+        raise RuntimeError(f"Unexpected method {request.method}")
+
+# def _build_cors_preflight_response():
+#     """Build response for CORS preflight requests."""
+#     response = make_response()
+#     response.headers.add("Access-Control-Allow-Origin", "*")
+#     response.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+#     response.headers.add("Access-Control-Allow-Methods", "POST, OPTIONS")
+#     response.headers.add("Access-Control-Max-Age", "3600")  # Cache preflight for 1 hour
+#     return response
+
+def _corsify_actual_response(response, status=200):
+    """Add CORS headers to actual responses."""
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response, status
     # response = make_response()
     # response.headers['Access-Control-Allow-Origin'] = '*'
     # response.headers['Access-Control-Allow-Methods'] = '*'
@@ -72,41 +114,41 @@ def classification():
     # print(f"RESPONSE METHOD, PATH, HEADERS: {response.method}, {response.path}, {response.headers}")
 
 
-    print ("Doing classification stuff now")
-    if request.content_type != 'application/json':
-        print("IT WASNT APPLICATION/JSON")
-        return jsonify({"error": "Unsupported Media Type"}), 415
+    # print ("Doing classification stuff now")
+    # if request.content_type != 'application/json':
+    #     print("IT WASNT APPLICATION/JSON")
+    #     return jsonify({"error": "Unsupported Media Type"}), 415
 
-    # Parse JSON body
-    try:
-        user_input = request.json['userInput']
-    except (TypeError, KeyError):
-        return jsonify({"error": "Invalid JSON body"}), 400
-    # user_input = request.json['userInput']
-    print("USER INPUT CLASSIFICATION: ", user_input)
-    print("USER INPUT TYPE CLASSIFICATION: ", type(user_input))    
-    # if user_input is None:
-    #     return jsonify({"error": "Invalid payload"}), 400
+    # # Parse JSON body
+    # try:
+    #     user_input = request.json['userInput']
+    # except (TypeError, KeyError):
+    #     return jsonify({"error": "Invalid JSON body"}), 400
+    # # user_input = request.json['userInput']
+    # print("USER INPUT CLASSIFICATION: ", user_input)
+    # print("USER INPUT TYPE CLASSIFICATION: ", type(user_input))    
+    # # if user_input is None:
+    # #     return jsonify({"error": "Invalid payload"}), 400
     
-    # preprocessed_input = np.array(list(user_input.values()))
-    preprocessed_input = list(user_input.values())
-    preprocessed_input = np.array(preprocessed_input)
-    print(f"User Input was: {preprocessed_input}")
-    print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
+    # # preprocessed_input = np.array(list(user_input.values()))
+    # preprocessed_input = list(user_input.values())
+    # preprocessed_input = np.array(preprocessed_input)
+    # print(f"User Input was: {preprocessed_input}")
+    # print(f"Preprocessed input shape: {preprocessed_input.shape}, dtype: {preprocessed_input.dtype}")
 
-    print(f"Starting prediction...")
-    model_start = time.time() 
-    prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]  
-    model_end = time.time() 
-    classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
+    # print(f"Starting prediction...")
+    # model_start = time.time() 
+    # prediction = model.predict(preprocessed_input.reshape(1, -1))[0][0]  
+    # model_end = time.time() 
+    # classification_result = 1 if prediction > 0.5 else 0  # Classification based on threshold
 
-    end_time = time.time()
-    print(f"Total time: {end_time - start_time} seconds")
-    print(f"Model inference time: {model_end - model_start} seconds")
+    # end_time = time.time()
+    # print(f"Total time: {end_time - start_time} seconds")
+    # print(f"Model inference time: {model_end - model_start} seconds")
   
-    print(f"Classification is: {classification_result}")
-    print(f"Response being sent: {jsonify({'result': classification_result})}")
-    return jsonify({"result": classification_result})
+    # print(f"Classification is: {classification_result}")
+    # print(f"Response being sent: {jsonify({'result': classification_result})}")
+    # return jsonify({"result": classification_result})
 
 # @app.route('/api/classification', methods=['OPTIONS'])
 # def handle_preflight():
