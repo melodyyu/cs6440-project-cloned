@@ -58,11 +58,13 @@ def probability():
     odds = np.exp(log_odds)
     probability = 1/(1 + odds)
     probability = list(probability)
+    probability = (probability[0]*100).round(1)
+    probability = str(probability) + '%
 
     print(f"User Input was: {values}")
     print(f"Probability is: {probability}")
     print(f"Response being sent: {jsonify({'result': probability[0]})}")
-    return jsonify({"result": probability[0]})
+    return jsonify({"result": probability})
 
 # Neural network endpoint
 @app.route('/api/classification', methods=['OPTIONS', 'POST'])
