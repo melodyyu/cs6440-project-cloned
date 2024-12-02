@@ -1,1 +1,67 @@
-<app-user-input></app-user-input>
+<header>
+    <div class="container p-4 text-center align-middle">
+        <h3 class="fs-1 text center">Cardiovascular Disease (CVD) Risk Prediction Tool</h3>
+    </div>
+</header>
+<section>
+
+    <div class="container-fluid px-0">
+      <div class="row g-0">
+  
+        <!-- First column -->
+        <div class="col d-flex flex-column align-items-center p-4">
+            <app-user-input class="w-100"></app-user-input>
+        </div>
+        <!-- First column -->
+  
+        <!-- Second column -->
+        <div class="col d-flex flex-column align-items-start p-4">
+            <div class="container">
+                <!-- TABS CONTAINER -->
+                <div class="nav nav-tabs d-flex" id="nav-tab" role="tablist">
+                  <!-- TAB1 -->
+                  <a
+                    class="w-100 nav-item nav-link"
+                    routerLink="/cvd"
+                    routerLinkActive="active"
+                    style="flex: 1"
+                  >
+                    Understanding CVD
+                  </a>
+                  <!-- TAB2 -->
+                  <a
+                    class="w-100 nav-item nav-link"
+                    routerLink="/lr-model"
+                    routerLinkActive="active"
+                    style="flex: 1"
+                  >
+                    Logistic Regression Model
+                  </a>
+                  <!-- TAB3 -->
+                  <a
+                    class="w-100 nav-item nav-link"
+                    routerLink="/class-model"
+                    routerLinkActive="active"
+                    style="flex: 1"
+                  >
+                    Neural Network Model
+                  </a>
+                  <!-- TAB4 -->
+                  <a
+                    class="w-100 nav-item nav-link"
+                    routerLink="/references"
+                    routerLinkActive="active"
+                    style="flex: 1"
+                  >
+                   Additional Information
+                    <!-- References & Further Reading -->
+                  </a>
+                </div>
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <!-- Second column -->
+      </div>
+    </div>
+
+</section>
