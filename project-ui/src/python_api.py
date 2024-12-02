@@ -59,7 +59,7 @@ def probability():
     probability = 1/(1 + odds)
     probability = list(probability)
     probability = (probability[0]*100).round(1)
-    probability = str(probability) + '%
+    probability = str(probability) + '%'
 
     print(f"User Input was: {values}")
     print(f"Probability is: {probability}")
