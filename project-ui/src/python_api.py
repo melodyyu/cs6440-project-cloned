@@ -63,7 +63,7 @@ def probability():
 
     print(f"User Input was: {values}")
     print(f"Probability is: {probability}")
-    print(f"Response being sent: {jsonify({'result': probability[0]})}")
+    print(f"Response being sent: {jsonify({'result': probability})}")
     return jsonify({"result": probability})
 
 # Neural network endpoint
