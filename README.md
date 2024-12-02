@@ -1,4 +1,6 @@
-# cs6440-project
+# cs6440-cvd-risk-detection
+
+This web application helps users assess their risk of cardiovascular disease (CVD). It features an Angular-based frontend where users can input medical information such as age, weight, and blood pressure. The data is sent to a Flask backend, which utilizes both a logistic regression model and a neural network to generate predictions about the user's likelihood of CVD. The app is deployed via Render for easy access.
 
 #### Notes: 
 - Site is deployed via Render, accessible at https://cs6440-project-cloned-1.onrender.com/cvd.
