@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms'; 
+import { FormGroup, FormsModule } from '@angular/forms'; 
 import { CommonModule  } from '@angular/common'
 import { ApiService } from '../api.service';
 
@@ -10,6 +10,10 @@ import { ApiService } from '../api.service';
   styleUrl: './user-input.component.css'
 })
 export class UserInputComponent {
+  userForm!: FormGroup;
+  showText = false;
+  text!: string;
+
   age!: number;
   gender!: number;
   height!: number;
@@ -37,7 +41,7 @@ export class UserInputComponent {
   constructor(private apiService: ApiService) {}
 
   async onSubmit(event: Event) { 
-    let input = {
+    var input: { [key: string]: any } = {
       'age': this.age,
       'gender': Number(this.gender),
       'height': this.height,
@@ -51,49 +55,47 @@ export class UserInputComponent {
     }
 
     if (this.cholesterol < 200) {
-      input.cholesterol = 1
+      input['cholesterol'] = 1
     } else if (this.cholesterol >= 200 && this.cholesterol <= 239) {
-      input.cholesterol = 2
+      input['cholesterol'] = 2
     } else {
-      input.cholesterol = 3
+      input['cholesterol'] = 3
     }
 
     if (this.gluc < 70) {
-      input.gluc = 0
+      input['gluc'] = 0
     } else if (this.gluc >= 70 && this.gluc <= 100) {
-      input.gluc = 1
+      input['gluc'] = 1
     } else if (this.gluc > 100 && this.gluc <= 125) {
-      input.gluc = 2
+      input['gluc'] = 2
     } else {
-      input.gluc = 3
+      input['gluc'] = 3
     }
 
     const button = (event.target as HTMLButtonElement).value
-    // console.log(input)
-    console.log('User input:', input); // Debug user input
-    console.log('User input TYPE:', typeof input); // Debug user input type
-    console.log('Button clicked:', button); // Debug which button was clicked
 
     if (button === 'probability') {
-      this.apiService.calculateProbability({ userInput: input }).subscribe({
-        next: (response) => {
-          console.log('Probability API Response:', response); // Log success response
+      this.apiService.calculateProbability({userInput: input})
+      .subscribe((response) => this.output = response) 
+      this.text = 'Our logistic regression model has calculated the probability of this patient having a CVD as '
+      this.showText = true
+    }
+
+    if (button === 'classification') {
+      this.apiService.calculateClassification({ userInput: input })
+        .subscribe((response: any) => {
           this.output = response;
-        },
-        error: (error) => {
-          console.error('Error from Probability API:', error); // Log error
-        },
-      });
-    } else if (button === 'classification') {
-      this.apiService.calculateClassification({ userInput: input }).subscribe({
-        next: (response) => {
-          console.log('Classification API Response:', response); // Log success response
-          this.output = response;
-        },
-        error: (error) => {
-          console.error('Error from Classification API:', error); // Log error
-        },
-      });
+    
+          // Set  message based on the classification result
+          if (response.result === 1) {
+            this.text = 'Our neural network model suggests that this patient is likely at risk for CVD.';
+          } else {
+            this.text = 'Our neural network model suggests that this patient is NOT likely at risk for CVD.';
+          }
+          
+          this.showText = true;
+          this.output = null; // Remove the result from showing up at all 
+        });
     }
   }
 }

@@ -1,41 +1,58 @@
-<form #userForm="ngForm"> 
-    <input type="number" name="age" placeholder="" [(ngModel)]="age"> 
-    <label for="age">Age (years)</label>
-    <br/> 
-    <select type="number" name="gender" [(ngModel)]="gender">
-        <option *ngFor="let option of sexOptions" [value]="option.value">{{ option.label }}</option>
-    </select>
-    <label for="alco">What is your sex?</label>
-    <br/>
-    <input type="number" name="height" placeholder="" [(ngModel)]="height"> 
-    <label for="height">Height (cm)</label>
-    <br/> 
-    <input type="number" name="weight" placeholder="" [(ngModel)]="weight"> 
-    <label for="weight">Weight (kg)</label>
-    <br/> 
-    <input type="number" name="ap_hi" placeholder="" [(ngModel)]="ap_hi">
-    <label for="ap_hi">Systolic Blood Pressure (mm[Hg])</label> 
-    <br/>
-    <input type="number" name="ap_lo" placeholder="" [(ngModel)]="ap_lo">
-    <label for="ap_lo">Diastolic Blood Pressure (mm[Hg])</label>  
-    <br/>
-    <input type="number" name="cholesterol" placeholder="" [(ngModel)]="cholesterol"> 
-    <label for="cholesterol">Cholesterol (mg/dL)</label>
-    <br/>
-    <input type="number" name="gluc" placeholder="" [(ngModel)]="gluc"> 
-    <label for="gluc">Glucose (mg/dL)</label>
-    <br/>
-    <select type="number" name="smoke" [(ngModel)]="smoke">
-        <option *ngFor="let option of selectOptions" [value]="option.value">{{ option.label }}</option>
-    </select>
-    <label for="smoke">How often do you smoke?</label>
-    <br/>
-    <select type="number" name="alco" [(ngModel)]="alco">
-        <option *ngFor="let option of selectOptions" [value]="option.value">{{ option.label }}</option>
-    </select>
-    <label for="alco">How often do you drink alcohol?</label>
-    <br/>
-    <button type="submit" name="probability" value="probability" (click)="onSubmit($event)">Probability</button>
-    <button type="submit" name="classification" value="classification" (click)="onSubmit($event)">Classification</button> 
- </form>
- <p>{{ output?.result }}</p>
+<div class="container">
+    <form #userForm="ngForm"> 
+        <div class="form-group">
+            <label for="age">Age (years)</label>
+            <input class="form-control form-control-sm" type="number" name="age" placeholder="" [(ngModel)]="age" required> 
+        </div>
+        <div class="form-group">
+            <label for="alco">What is your sex?</label>
+            <select class="form-select form-select-sm" type="number" name="gender" [(ngModel)]="gender" required>
+                <option *ngFor="let option of sexOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="height">Height (cm)</label>
+            <input class="form-control form-control-sm" type="number" name="height" placeholder="" [(ngModel)]="height" required> 
+        </div>
+        <div class="form-group">
+            <label for="weight">Weight (kg)</label>
+            <input class="form-control form-control-sm" type="number" name="weight" placeholder="" [(ngModel)]="weight" required> 
+        </div>
+        <div class="form-group">
+            <label for="ap_hi">Systolic Blood Pressure (mm[Hg])</label>
+            <input class="form-control form-control-sm" type="number" name="ap_hi" placeholder="" [(ngModel)]="ap_hi" required>
+        </div>
+        <div class="form-group">
+            <label for="ap_lo">Diastolic Blood Pressure (mm[Hg])</label>
+            <input class="form-control form-control-sm" type="number" name="ap_lo" placeholder="" [(ngModel)]="ap_lo" required>  
+        </div>
+        <div class="form-group">
+            <label for="cholesterol">Cholesterol (mg/dL)</label>
+            <input class="form-control form-control-sm" type="number" name="cholesterol" placeholder="" [(ngModel)]="cholesterol" required> 
+        </div>
+        <div class="form-group">
+            <label for="gluc">Glucose (mg/dL)</label>
+            <input class="form-control form-control-sm" type="number" name="gluc" placeholder="" [(ngModel)]="gluc" required> 
+        </div> 
+        <div class="form-group">
+            <label for="smoke">How often do you smoke?</label>
+            <select class="form-select form-select-sm" type="number" name="smoke" [(ngModel)]="smoke" required>
+                <option *ngFor="let option of selectOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="alco">How often do you drink alcohol?</label>
+            <select class="form-select form-select-sm" type="number" name="alco" [(ngModel)]="alco" required>
+                <option *ngFor="let option of selectOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+        </div>
+        <br/>
+        <button [disabled]="!userForm.valid" (click)="onSubmit($event)" class="btn btn-outline-primary" style="margin-right: 5px" type="submit" name="probability" value="probability">Probability</button>
+        <button [disabled]="!userForm.valid" (click)="onSubmit($event)" class="btn btn-outline-primary" type="submit" name="classification" value="classification">Classification</button> 
+    </form>
+</div>
+<br/>
+<div class="container">
+    <p [hidden]="!showText">{{ text }} {{ output?.result }}</p>
+</div>
+
